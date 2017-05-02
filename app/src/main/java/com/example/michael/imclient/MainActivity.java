@@ -6,11 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.net.Socket;
 
 import client.Client;
 
@@ -53,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         try {
                             client = new Client();
                             Thread.sleep(3000);
-                            if (!Client.getIsLogin()) {
+                            if (!client.getIsLogin()) {
                                 return;
                             } else {
                                 Intent intent = new Intent();
@@ -66,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                 }).start();
+            case R.id.button_signup:
+                //TODO 注册功能待完成！
+                break;
+            default:
                 break;
         }
     }

@@ -19,7 +19,6 @@ public class WriteThread implements Runnable {
 
     @Override
     public void run() {
-        boolean flag = true;
         try {
             DataOutputStream output = new DataOutputStream(socket.getOutputStream());
             String name = MainActivity.getStr_name();
@@ -28,7 +27,6 @@ public class WriteThread implements Runnable {
             output.flush();
             //TODO 本部分工作待完成。
         } catch (Exception e) {
-            flag = false;
             System.out.println("WriteThread:客户端写进程错误！");
             e.printStackTrace();
         }

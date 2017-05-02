@@ -2,12 +2,10 @@ package client;
 
 import android.os.Handler;
 import android.os.Message;
-import android.widget.EditText;
 
 import com.example.michael.imclient.ChatActivity;
 
 import java.io.DataInputStream;
-import java.io.IOException;
 import java.net.Socket;
 
 /**
@@ -17,9 +15,11 @@ public class ReadThread implements Runnable {
     private Socket socket;
     private Handler handler;
     private ChatActivity chatActivity;
+    private Client client;
 
     public ReadThread(Socket socket) {
         this.socket = socket;
+        client = Client.getInstance();
     }
 
     @Override
@@ -29,13 +29,19 @@ public class ReadThread implements Runnable {
             try {
                 DataInputStream input = new DataInputStream(socket.getInputStream());
                 String msg = input.readUTF();
-                if (msg.equals("msg#Server#登陆成功")) {
-                    Client.setIsLogin(true);
+                System.out.println(msg);
+                if (msg.equals("msg#Server#SUCCESS")) {
+                    client.setIsLogin(true);
                 }
 
                 while (flag) {
                     msg = input.readUTF();
                     System.out.println("msg:" + msg);
+                    try {
+                        Thread.sleep(6000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     chatActivity = ChatActivity.getInstance();
                     handler = chatActivity.getHandler();
                     Message m = new Message();
@@ -49,11 +55,5 @@ public class ReadThread implements Runnable {
                 e.printStackTrace();
             }
         }
-
-
-
-
-
-
     }
 }

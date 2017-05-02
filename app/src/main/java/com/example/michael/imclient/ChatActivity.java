@@ -20,11 +20,9 @@ public class ChatActivity extends AppCompatActivity {
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message m) {
-            System.out.println("---");
             switch (m.what) {
                 case 0:
                     String data = (String) m.obj;
-                    System.out.println("data:" + data);
                     String[] strs = data.trim().split("#");
                     String s = msg.getText().toString();
                     sb.append("\n" + strs[1] + ":" + strs[2]);

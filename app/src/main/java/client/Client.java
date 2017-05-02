@@ -7,12 +7,16 @@ import java.net.Socket;
  * Created by Michael on 2017/4/16.
  */
 public class Client {
-    private static final String IP = "10.0.2.2";
-    private static final int PORT = 10001;
-    private static boolean isLogin;
+    private final String IP;
+    private final int PORT;
+    private boolean isLogin;
+    private static Client instance;
 
     public Client() {
+        IP = "10.0.2.2";
+        PORT = 10001;
         isLogin = false;
+        Client.instance = this;
         try {
             Socket socket = new Socket(IP, PORT);
             new Thread(new ReadThread(socket)).start();
@@ -23,11 +27,15 @@ public class Client {
         }
     }
 
-    public static void setIsLogin(boolean isLogin) {
-        Client.isLogin = isLogin;
+    public void setIsLogin(boolean isLogin) {
+        this.isLogin = isLogin;
     }
 
-    public static boolean getIsLogin() {
-        return Client.isLogin;
+    public boolean getIsLogin() {
+        return this.isLogin;
+    }
+
+    public static Client getInstance() {
+        return Client.instance;
     }
 }
