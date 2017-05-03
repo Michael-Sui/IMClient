@@ -5,16 +5,24 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class ChatActivity extends AppCompatActivity {
+import java.net.Socket;
+
+import client.Client;
+import client.WriteThread;
+
+public class ChatActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText friend;
     private TextView chat;
     private EditText msg;
     private Button send;
     private static ChatActivity instance;
+    private Client client;
+    private Socket socket;
 
     private static StringBuilder sb = new StringBuilder();
     private Handler handler = new Handler() {
@@ -44,7 +52,12 @@ public class ChatActivity extends AppCompatActivity {
         chat.setMovementMethod(ScrollingMovementMethod.getInstance());
         msg = (EditText) findViewById(R.id.editText_msg);
         send = (Button) findViewById(R.id.button_send);
+        send.setOnClickListener(this);
         instance = this;
+        client = Client.getInstance();
+        socket = client.getSocket();
+
+        clear();
     }
 
     public Handler getHandler() {
@@ -53,5 +66,31 @@ public class ChatActivity extends AppCompatActivity {
 
     public static ChatActivity getInstance() {
         return instance;
+    }
+
+    public void clear() {
+        friend.setText("");
+        chat.setText("");
+        msg.setText("");
+    }
+
+    @Override
+    public void onClick(View v) {
+        String str_friend = friend.getText().toString();
+        String str_msg = msg.getText().toString();
+        if (str_friend.equals("") || str_msg.equals("")) {
+            return;
+        }
+        switch (v.getId()) {
+            case R.id.button_send:
+                new Thread(new WriteThread(socket, "msg", str_friend, str_msg)).start();
+                msg.setText("");
+                String s = msg.getText().toString();
+                sb.append("\n" + "to:" + str_friend + ":" + str_msg);
+                chat.setText(sb.toString());
+                break;
+            default:
+                break;
+        }
     }
 }

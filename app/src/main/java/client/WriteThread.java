@@ -1,31 +1,31 @@
 package client;
 
-import com.example.michael.imclient.MainActivity;
-
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.net.Socket;
-import java.util.Scanner;
 
 /**
  * Created by Michael on 2017/4/16.
  */
 public class WriteThread implements Runnable {
     private Socket socket;
+    private String type;
+    private String name;
+    private String msg;
 
-    public WriteThread(Socket sockst) {
+    public WriteThread(Socket sockst, String type, String name, String msg) {
         this.socket = sockst;
+        this.type = type;
+        this.name = name;
+        this.msg = msg;
     }
 
     @Override
     public void run() {
         try {
             DataOutputStream output = new DataOutputStream(socket.getOutputStream());
-            String name = MainActivity.getStr_name();
-            String pwd = MainActivity.getStr_pwd();
-            output.writeUTF("logIn#" + name + "#" + pwd);
+            System.out.println(type + "#" + name + "#" + msg);
+            output.writeUTF(type + "#" + name + "#" + msg);
             output.flush();
-            //TODO 本部分工作待完成。
         } catch (Exception e) {
             System.out.println("WriteThread:客户端写进程错误！");
             e.printStackTrace();

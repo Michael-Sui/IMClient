@@ -11,16 +11,17 @@ public class Client {
     private final int PORT;
     private boolean isLogin;
     private static Client instance;
+    private Socket socket;
 
-    public Client() {
+    public Client(String type, String name, String msg) {
         IP = "10.0.2.2";
         PORT = 10001;
         isLogin = false;
         Client.instance = this;
         try {
-            Socket socket = new Socket(IP, PORT);
+            socket = new Socket(IP, PORT);
             new Thread(new ReadThread(socket)).start();
-            new Thread(new WriteThread(socket)).start();
+            new Thread(new WriteThread(socket, type, name, msg)).start();
         } catch (IOException e) {
             System.out.println("Client:客户端错误！");
             e.printStackTrace();
@@ -33,6 +34,10 @@ public class Client {
 
     public boolean getIsLogin() {
         return this.isLogin;
+    }
+
+    public Socket getSocket() {
+        return this.socket;
     }
 
     public static Client getInstance() {
