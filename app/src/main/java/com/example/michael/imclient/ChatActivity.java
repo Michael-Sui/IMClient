@@ -19,12 +19,11 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private EditText friend;
     private TextView chat;
     private EditText msg;
-    private Button send;
     private static ChatActivity instance;
-    private Client client;
     private Socket socket;
 
     private static StringBuilder sb = new StringBuilder();
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message m) {
@@ -33,7 +32,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     String data = (String) m.obj;
                     String[] strs = data.trim().split("#");
                     String s = msg.getText().toString();
-                    sb.append("\n" + strs[1] + ":" + strs[2]);
+                    sb.append("\n").append(strs[1]).append(":").append(strs[2]);
                     chat.setText(sb.toString());
                     break;
                 default:
@@ -51,10 +50,10 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         chat = (TextView) findViewById(R.id.textView_chat);
         chat.setMovementMethod(ScrollingMovementMethod.getInstance());
         msg = (EditText) findViewById(R.id.editText_msg);
-        send = (Button) findViewById(R.id.button_send);
+        Button send = (Button) findViewById(R.id.button_send);
         send.setOnClickListener(this);
         instance = this;
-        client = Client.getInstance();
+        Client client = Client.getInstance();
         socket = client.getSocket();
 
         clear();
@@ -86,7 +85,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 new Thread(new WriteThread(socket, "msg", str_friend, str_msg)).start();
                 msg.setText("");
                 String s = msg.getText().toString();
-                sb.append("\n" + "to:" + str_friend + ":" + str_msg);
+                sb.append("\n" + "to:").append(str_friend).append(":").append(str_msg);
                 chat.setText(sb.toString());
                 break;
             default:

@@ -16,15 +16,16 @@ public class ReadThread implements Runnable {
     private Handler handler;
     private ChatActivity chatActivity;
     private Client client;
+    private boolean flag;
 
     public ReadThread(Socket socket) {
         this.socket = socket;
         client = Client.getInstance();
+        flag = true;
     }
 
     @Override
     public void run() {
-        boolean flag = true;
         while (flag) {
             try {
                 DataInputStream input = new DataInputStream(socket.getInputStream());

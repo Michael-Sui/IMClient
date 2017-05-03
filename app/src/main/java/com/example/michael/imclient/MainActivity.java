@@ -10,8 +10,6 @@ import android.widget.EditText;
 import client.Client;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button login;
-    private Button signup;
     private EditText name;
     private EditText pwd;
     private Client client;
@@ -21,9 +19,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        login = (Button) findViewById(R.id.button_login);
+        Button login = (Button) findViewById(R.id.button_login);
         login.setOnClickListener(this);
-        signup = (Button) findViewById(R.id.button_signup);
+        Button signup = (Button) findViewById(R.id.button_signup);
         signup.setOnClickListener(this);
         name = (EditText) findViewById(R.id.editText_name);
         pwd = (EditText) findViewById(R.id.editText_pwd);
@@ -44,9 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     try {
                         client = new Client("logIn", str_name, str_pwd);
                         Thread.sleep(3000);
-                        if (!client.getIsLogin()) {
-                            return;
-                        } else {
+                        if (client.getIsLogin()) {
                             Intent intent = new Intent();
                             intent.setClass(MainActivity.this, ChatActivity.class);
                             startActivity(intent);
@@ -56,8 +52,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 }).start();
+                break;
             case R.id.button_signup:
-                //TODO 注册功能待完成！
+                new Thread(() -> {
+                    try {
+                        client = new Client("signUp", str_name, str_pwd);
+                        Thread.sleep(3000);
+                        if (client.getIsLogin()) {
+                            Intent intent = new Intent();
+                            intent.setClass(MainActivity.this, ChatActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }).start();
                 break;
             default:
                 break;
