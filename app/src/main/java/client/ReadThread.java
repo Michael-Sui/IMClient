@@ -52,8 +52,8 @@ public class ReadThread implements Runnable {
                 }
             } catch (Exception e) {
                 flag = false;
-                System.out.println("ReadThread:客户端读进程错误！");
-                e.printStackTrace();
+                //System.out.println("ReadThread:客户端读进程错误！");
+                //e.printStackTrace();
             }
         }
     }

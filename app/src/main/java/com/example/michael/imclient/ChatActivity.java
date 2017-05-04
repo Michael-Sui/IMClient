@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.net.Socket;
 
@@ -78,6 +79,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         String str_friend = friend.getText().toString();
         String str_msg = msg.getText().toString();
         if (str_friend.equals("") || str_msg.equals("")) {
+            Toast.makeText(ChatActivity.this, "用户名或密码不能为空", Toast.LENGTH_LONG).show();
             return;
         }
         switch (v.getId()) {

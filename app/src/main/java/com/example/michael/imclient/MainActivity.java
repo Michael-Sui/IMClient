@@ -1,11 +1,13 @@
 package com.example.michael.imclient;
 
 import android.content.Intent;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import client.Client;
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String str_name = name.getText().toString();
         String str_pwd = pwd.getText().toString();
         if (str_name.equals("") || str_pwd.equals("")) {
+            Toast.makeText(MainActivity.this, "用户名或密码不能为空", Toast.LENGTH_LONG).show();
             return;
         }
         switch (v.getId()) {
@@ -47,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             intent.setClass(MainActivity.this, ChatActivity.class);
                             startActivity(intent);
                             finish();
+                        } else {
+                            Looper.prepare();
+                            Toast.makeText(MainActivity.this, "登录失败", Toast.LENGTH_LONG).show();
+                            Looper.loop();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -63,6 +70,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             intent.setClass(MainActivity.this, ChatActivity.class);
                             startActivity(intent);
                             finish();
+                        } else {
+                            Looper.prepare();
+                            Toast.makeText(MainActivity.this, "注册失败", Toast.LENGTH_LONG).show();
+                            Looper.loop();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
